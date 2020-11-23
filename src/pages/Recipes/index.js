@@ -1,17 +1,31 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Feather } from '@expo/vector-icons'
 import { View, FlatList, Image, Text, TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import logoImg from '../../assets/logo.png'
 
+import api from '../../services/api'
+
 import styles from './styles'
 
 export default function Recipes() {
   const navigation = useNavigation()
+  const [recipes, setrecipes] = useState([])
 
   function navigateToDetails() {
     navigation.navigate('Details')
   }
+
+  // conectando com api
+  async function loadRecipes() {
+    const response = await api.get('recipes')
+
+    setrecipes(response.data)
+  }
+
+  useEffect(() => {
+    loadRecipes()
+  }, [])
 
   return (
     <View styles={styles.container}>
@@ -29,26 +43,20 @@ export default function Recipes() {
 
       {/* list recipes */}
       <FlatList
-        data={[1, 2, 3, 4, 5, 6]}
+        data={recipes}
         styles={styles.recipesList}
-        keyExtractor={recipes => String(recipes)}
+        keyExtractor={recipes => String(recipes.id)}
         showsVerticalScrollIndicator={false}
-        renderItem={() => (
+        renderItem={({ item: recipe }) => (
           <View style={styles.recipes}>
             <Text style={styles.recipesProperties}>Receita:</Text>
-            <Text style={styles.recipesValue}>Bolo Chocolate</Text>
+            <Text style={styles.recipesValue}>{recipes.title}</Text>
 
             <Text style={styles.recipesProperties}>Ingredientes:</Text>
-            <Text style={styles.recipesValue}>
-              250gr de Farinha de trigo,
-              2 conher de manteiga...
-            </Text>
+            <Text style={styles.recipesValue}>{recipes.ingredients}</Text>
 
             <Text style={styles.recipesProperties}>Modo de fazer:</Text>
-            <Text style={styles.recipesValue}>
-              Num recepiente adicionar um farinha de trigo,
-              Chocolate, leite...
-            </Text>
+            <Text style={styles.recipesValue}>{recipes.make}</Text>
 
             <TouchableOpacity style={styles.detailsButton} onPress={navigateToDetails}>
               <Text style={styles.detailsButtonText}>Ver mais detalhes</Text>
