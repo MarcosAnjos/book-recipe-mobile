@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Feather } from '@expo/vector-icons'
 import { View, FlatList, Image, Text, TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
+
 import logoImg from '../../assets/logo.png'
 
 import api from '../../services/api'
@@ -9,18 +10,38 @@ import api from '../../services/api'
 import styles from './styles'
 
 export default function Recipes() {
+  const [loading, setLoading] = useState([])
+  const [total, settotal] = useState([])
   const navigation = useNavigation()
   const [recipes, setrecipes] = useState([])
 
+  const navigation = useNavigation()
+
   function navigateToDetails() {
-    navigation.navigate('Details')
+    navigation.navigate('Details', { recipe })
   }
+
 
   // conectando com api
   async function loadRecipes() {
-    const response = await api.get('recipes')
+    if (loading) {
+      return
+    }
 
-    setrecipes(response.data)
+    if (total > 0 && recipes.length === total) {
+      return
+    }
+
+    setLoading(true)
+
+    const response = await api.get('recipes', {
+      params: { page }
+    })
+
+    setrecipes([...recipes, ...response.data])
+    setTotal(response.headers['x-total-count'])
+    setPage(page + 1)
+    setLoading(false)
   }
 
   useEffect(() => {
@@ -33,7 +54,7 @@ export default function Recipes() {
       <View style={styles.header}>
         <Image source={logoImg} />
         <Text style={styles.hederText}>
-          Total de <Text style={styles.headerTextBold}>0 receitas</Text>.
+          Total de <Text style={styles.headerTextBold}>{total}</Text>.
         </Text>
       </View>
 

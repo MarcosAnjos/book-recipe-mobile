@@ -1,14 +1,14 @@
 {
   "expo": {
-    "name": "book-recipes",
-    "slug": "bookrecipe",
+    "name": "Book Recipes",
+    "slug": "book-recipe",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
-      "image": "./assets/splash.svg",
+      "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#fff"
+      "backgroundColor": "#e02041"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -22,11 +22,9 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/icon.png",
-        "backgroundColor": "#FFFFFF"
-      }
-    },
-    "web": {
-      "favicon": "./assets/icon.png"
+        "backgroundColor": "#e02041"
+      },
+      "package": "com.bookrecipes.bookrecipes"
     }
   }
 }
