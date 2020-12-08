@@ -10,10 +10,10 @@ import api from '../../services/api'
 import styles from './styles'
 
 export default function Recipes() {
-  const [loading, setLoading] = useState([])
-  const [total, settotal] = useState([])
-  const navigation = useNavigation()
+  const [loading, setLoading] = useState(false)
+  const [total, setTotal] = useState(0)
   const [recipes, setrecipes] = useState([])
+  const [page, setPage] = useState(1)
 
   const navigation = useNavigation()
 
